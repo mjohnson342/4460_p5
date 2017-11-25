@@ -1,4 +1,34 @@
+body {
+    font-size: 18px;
+    font-family: sans-serif;
+}
 
 #main {
     padding: 20px;
+}
+
+
+#sections {
+  position: relative;
+  display: inline-block;
+  width: 250px;
+  top: 0px;
+  z-index: 90;
+}
+
+.step {
+  margin-top: 200px;
+  margin-bottom: 200px;
+}
+
+#vis {
+  display: inline-block;
+  position: fixed;
+  top: 60px;
+  z-index: 1;
+  margin-left: 0;
+
+  height: 600px;
+  width: 600px;
+  background-color: #ddd;
 }
