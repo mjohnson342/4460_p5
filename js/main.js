@@ -20,27 +20,30 @@ sectionPositions = [];
 var startPos;
 
 for (var i = 0, len = sections.length; i < len; i++) {
-    var top = sections[i].getBoundingClientRect().top;
-    console.log(sections[i].getBoundingClientRect().top);
-    console.log(top); //should be same as above, but isnt????
+    var current = sections[i];
     if(i === 0) {
-      startPos = top;
+      startPos = current.getBoundingClientRect().top;;
     }
-    sectionPositions.push(top - startPos);
+    sectionPositions.push(current.getBoundingClientRect().top - startPos);
 }
 
-
+console.log(sectionPositions);
+console.log(sections);
 
 d3.select(window)
   .on("scroll.scroller", position);
 
+var dispatch = d3.dispatch("active", "progress");
+var currentIndex = 0;
+
 function position() {
   var pos = window.pageYOffset - 10;
   var sectionIndex = d3.bisect(sectionPositions, pos);
-  sectionIndex = Math.min(sections.size() - 1, sectionIndex);
+  sectionIndex = Math.min(sections.length - 1, sectionIndex);
 
   if (currentIndex !== sectionIndex) {
-    dispatch.active(sectionIndex);
+      console.log("changing vis");
+    //dispatch.active(sectionIndex);
     currentIndex = sectionIndex;
   }
 }
@@ -52,5 +55,6 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
         console.error(error);
         return;
     }
+
 
   });

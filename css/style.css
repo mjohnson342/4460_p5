@@ -5,6 +5,11 @@ body {
 
 #main {
     padding: 20px;
+
+}
+
+#graphic {
+
 }
 
 
@@ -18,7 +23,7 @@ body {
 
 .step {
   margin-top: 200px;
-  margin-bottom: 200px;
+  margin-bottom: 600px;
 }
 
 #vis {
@@ -29,6 +34,6 @@ body {
   margin-left: 0;
 
   height: 600px;
-  width: 600px;
+  width: 1000px;
   background-color: #ddd;
 }
