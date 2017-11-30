@@ -18,17 +18,20 @@ svg.append("rect")
     .attr("height", "100%")
     .attr("fill", "white");
 
-var chartG = svg.append("g")
+var chart2 = svg.append("g")
+.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var chart3 = svg.append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
  var dispatch = d3.dispatch('active', 'progress');
 
 //create axes but dont call them untill updateChart()
-var xAxisG = chartG.append('g')
+var xAxis2 = chart2.append('g')
     .attr('class', 'x axis')
     .attr('transform', 'translate('+[0, height]+')');
 
-var yAxisG = chartG.append('g')
+var yAxis2 = chart2.append('g')
     .attr('class', 'y axis');
 
 var sections = document.getElementsByClassName("step");
@@ -92,9 +95,9 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
       switch(index) {
           case 0:
             console.log('code for vis 1 here');
-            chartG.selectAll("g")
-            .transition()
-            .duration(750)
+            chart2.selectAll("g")
+                .transition()
+                .duration(750)
                 .attr("opacity", 0);
           break;
 
@@ -102,17 +105,17 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
 
 
             console.log('code for vis 2 here');
-            xAxisG.transition()
+            xAxis2.transition()
                 .duration(750) // Add transition
                 .call(d3.axisBottom(xScale));
-            yAxisG.transition()
+            yAxis2.transition()
                 .duration(750) // Add transition
                 .call(d3.axisLeft(yScale));
 
-                chartG.selectAll("g")
-                    .transition()
-                    .duration(750)
-                    .attr("opacity", 1);
+            chart2.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 1);
 
             nested = d3.nest()
                 .key(function(d) { return d.Country; })
@@ -125,9 +128,10 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
 
           case 2:
             console.log('code for vis 3 here');
-            chartG.selectAll("g")
-            .transition()
-            .duration(750)
+
+            chart2.selectAll("g")
+                .transition()
+                .duration(750)
                 .attr("opacity", 0);
           break;
       }
