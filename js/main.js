@@ -102,6 +102,13 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
             yAxisG.transition()
                 .duration(750) // Add transition
                 .call(d3.axisLeft(yScale));
+            nested = d3.nest()
+                .key(function(d) { return d.Country; })
+                .rollup(function(v) { return {
+                  count: v.length,
+                }; })
+              .entries(incidents);
+            console.log(nested);
           break;
 
           case 2:
