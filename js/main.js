@@ -21,6 +21,7 @@ svg.append("rect")
 var chartG = svg.append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+ var dispatch = d3.dispatch('active', 'progress');
 
 //create axes but dont call them untill updateChart()
 var xAxisG = chartG.append('g')
@@ -58,8 +59,8 @@ function position() {
 
   if (currentIndex !== sectionIndex) {
     //dispatch.active(sectionIndex);
+    dispatch.call('active', this, sectionIndex);
     currentIndex = sectionIndex;
-    // console.log(currentIndex);
     //update chart on transition
     updateChart(currentIndex);
   }
