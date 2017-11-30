@@ -56,5 +56,4 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
         return;
     }
 
-
   });
