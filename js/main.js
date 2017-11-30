@@ -12,6 +12,12 @@ var svg = d3.select("svg"),
 //     x = d3.scaleBand().rangeRound([0, width/2 - 40]).padding(0.1)
 //     y = d3.scaleLinear().rangeRound([0,height]);
 
+//white background
+svg.append("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "white");
+
 var chartG = svg.append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -81,23 +87,23 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
     updateChart(0);
   });
 
-  //call update with the index of the scrollyteller, update the chart differently using cases to create unique charts here
   function updateChart(index) {
-      //update yScale.domain here to change axes widh on transition, see https://github.gatech.edu/CS-4460/Labs/blob/master/07_lab/solution/main.js
+      //call update with the index of the scrollyteller, update the chart differently using cases to create unique charts here
       switch(index) {
           case 0:
             console.log('code for vis 1 here');
-            xAxisG.transition()
-            .duration(750)
-            .call(d3.axisBottom(xScale));
-
-            yAxisG.transition()
-              .duration(750)
-              .call(d3.axisLeft(yScale));
           break;
+
           case 1:
             console.log('code for vis 2 here');
+            xAxisG.transition()
+                .duration(750) // Add transition
+                .call(d3.axisBottom(xScale));
+            yAxisG.transition()
+                .duration(750) // Add transition
+                .call(d3.axisLeft(yScale));
           break;
+
           case 2:
             console.log('code for vis 3 here');
           break;
