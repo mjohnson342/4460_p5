@@ -69,9 +69,9 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
 
     //create x and y scale
     xScale = d3.scaleLinear()
-        .range([0, chartWidth]);
+        .range([0, width]);
     yScale = d3.scaleLinear()
-        .range([chartHeight, 0]);
+        .range([height, 0]);
 
     //call update
     updateChart();
@@ -79,7 +79,15 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
 
 
   function updateChart() {
+      //update yScale.domain here to change axes widh on transition, see https://github.gatech.edu/CS-4460/Labs/blob/master/07_lab/solution/main.js
+
+
+      //call axes
       xAxisG.transition()
       .duration(750)
-      .call(d3.axisBottom());
+      .call(d3.axisBottom(xScale));
+
+      yAxisG.transition()
+        .duration(750)
+        .call(d3.axisLeft(yScale));
   }
