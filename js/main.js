@@ -44,7 +44,6 @@ for (var i = 0, len = sections.length; i < len; i++) {
 }
 
 console.log(sectionPositions);
-console.log(sections);
 
 d3.select(window)
   .on("scroll.scroller", position);
@@ -93,9 +92,15 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
       switch(index) {
           case 0:
             console.log('code for vis 1 here');
+            chartG.selectAll("g")
+            .transition()
+            .duration(750)
+                .attr("opacity", 0);
           break;
 
           case 1:
+
+
             console.log('code for vis 2 here');
             xAxisG.transition()
                 .duration(750) // Add transition
@@ -103,6 +108,12 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
             yAxisG.transition()
                 .duration(750) // Add transition
                 .call(d3.axisLeft(yScale));
+
+                chartG.selectAll("g")
+                    .transition()
+                    .duration(750)
+                    .attr("opacity", 1);
+
             nested = d3.nest()
                 .key(function(d) { return d.Country; })
                 .rollup(function(v) { return {
@@ -114,6 +125,10 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
 
           case 2:
             console.log('code for vis 3 here');
+            chartG.selectAll("g")
+            .transition()
+            .duration(750)
+                .attr("opacity", 0);
           break;
       }
       //call axes
