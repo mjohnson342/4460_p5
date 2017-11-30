@@ -51,9 +51,11 @@ function position() {
   sectionIndex = Math.min(sections.length - 1, sectionIndex);
 
   if (currentIndex !== sectionIndex) {
-      console.log("changing vis");
     //dispatch.active(sectionIndex);
     currentIndex = sectionIndex;
+    // console.log(currentIndex);
+    //update chart on transition
+    updateChart(currentIndex);
   }
 }
 
@@ -73,21 +75,33 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
     yScale = d3.scaleLinear()
         .range([height, 0]);
 
-    //call update
-    updateChart();
+
+
+    //make the initial call to update with the first index paramter
+    updateChart(0);
   });
 
-
-  function updateChart() {
+  //call update with the index of the scrollyteller, update the chart differently using cases to create unique charts here
+  function updateChart(index) {
       //update yScale.domain here to change axes widh on transition, see https://github.gatech.edu/CS-4460/Labs/blob/master/07_lab/solution/main.js
+      switch(index) {
+          case 0:
+            console.log('code for vis 1 here');
+            xAxisG.transition()
+            .duration(750)
+            .call(d3.axisBottom(xScale));
 
-
+            yAxisG.transition()
+              .duration(750)
+              .call(d3.axisLeft(yScale));
+          break;
+          case 1:
+            console.log('code for vis 2 here');
+          break;
+          case 2:
+            console.log('code for vis 3 here');
+          break;
+      }
       //call axes
-      xAxisG.transition()
-      .duration(750)
-      .call(d3.axisBottom(xScale));
 
-      yAxisG.transition()
-        .duration(750)
-        .call(d3.axisLeft(yScale));
   }
