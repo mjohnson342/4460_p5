@@ -1,5 +1,9 @@
 > This folder contains the five different data sets available for P5. You must choose one of these to visualize for your assignment. Below is a short summary of each data set.
 
+> geo map, airplane incidents, tiny dots, color represents carrier?
+> grouped bar charts for incidents by each major carrier by type (fatal, non-fatal, accident) 
+           maybe add animation and change the grouping variable to something else (grouped bar charts for incendents by each carrier by weather.
+
 ### Aircraft incidents
 
 This data set contains information about airplane mishaps that have occurred. These might be plane crashes or they could be more minor accidents that happened to a plane. Each data case (row) is an incident. Fields of the data set include date, location, airline, type of plane, phase of the flight, severity, fatalities, and so on.
