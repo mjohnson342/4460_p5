@@ -213,12 +213,13 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .duration(750)
                 .attr("opacity", 0);
 
-            xAxis2.transition()
-                .duration(750) // Add transition
-                .call(d3.axisBottom(xScale));
-            yAxis2.transition()
-                .duration(750) // Add transition
-                .call(d3.axisLeft(yScale));
+            // xAxis2.transition()
+            //     .duration(750) // Add transition
+            //     .call(d3.axisBottom(xScale));
+            // yAxis2.transition()
+            //     .duration(750) // Add transition
+            //     .call(d3.axisLeft(yScale));
+
 
             chart2.selectAll("g")
                 .transition()
@@ -237,16 +238,16 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
              .entries(incidents);
 
             // var barscale = d3.scale.log().domain([0, function(d) { return d.safe }]);
-
-            console.log(nested);
+            // nested = nested.filter( d => (d.safe > 0 || d.injured > 0 || d.fatalities > 0));
+            // console.log(nested);
             counter = 0;
-            padding = 4;
+            padding = 1;
             barsyellow = chart2.append("g")
                 .selectAll("yellowbars")
                 .data(nested)
                 .enter().append("rect")
                 .attr("y", function(d) {
-                    // console.log(d.value.fatalities);
+                    console.log(d.key);
                     return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
                 })
                 .attr("x", function(d) {
@@ -261,12 +262,12 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .attr("width", (width / 13) - (padding * 2))
                 .style("fill", "yellow");
             counter = 0;
-            barsgreen = chart2.append("g")
-                .selectAll("greenbars")
+            barsgreen = chart2.append("g");
+                barsgreen.selectAll("greenbars")
                 .data(nested)
                 .enter().append("rect")
                 .attr("y", function(d) {
-                    // console.log(d.value.fatalities);
+                    // console.log((d.value.safe + ", " + d.value.injured + ", " + d.value.fatalities));
                     return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities)));
                 })
                 .attr("x", function(d) {
@@ -280,7 +281,61 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 })
                 .attr("width", (width / 13) - (padding * 2))
                 .style("fill", "green");
-            counter = 0
+            counter = 0;
+
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(22,505), rotate(-45)')
+            .text('CRUISE');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(79,514), rotate(-45)')
+            .text('LANDING');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(142,520), rotate(-45)')
+            .text('STANDING');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(205,525), rotate(-45)')
+            .text('APPROACH');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(285,511), rotate(-45)')
+            .text('TAKEOFF');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(365,499), rotate(-45)')
+            .text('CLIMB');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(440,491), rotate(-45)')
+            .text('TAXI');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(488,502), rotate(-45)')
+            .text('OTHER');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(538,525), rotate(-45)')
+            .text('UNKNOWN');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(595,540), rotate(-45)')
+            .text('MANEUVERING');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(672,525), rotate(-45)')
+            .text('UNKNOWN');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(757,513), rotate(-45)')
+            .text('DESCENT');
+            barsgreen.append('text')
+            .attr('class', 'bar label')
+            .attr('transform', 'translate(804,535), rotate(-45)')
+            .text('GO-AROUND');
+
             barsred = chart2.append("g")
                 .selectAll("redbars")
                 .data(nested)
