@@ -248,7 +248,7 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .enter().append("rect")
                 .attr("y", function(d) {
                     console.log(d.key);
-                    return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
+                    return height  - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
                 })
                 .attr("x", function(d) {
                     counter++;
@@ -260,7 +260,7 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                     return (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
                 })
                 .attr("width", (width / 13) - (padding * 2))
-                .style("fill", "yellow");
+                .style("fill", "#f7cb09");
             counter = 0;
             barsgreen = chart2.append("g");
                 barsgreen.selectAll("greenbars")
@@ -280,7 +280,7 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                     return height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities));
                 })
                 .attr("width", (width / 13) - (padding * 2))
-                .style("fill", "green");
+                .style("fill", "40bf40");
             counter = 0;
 
             barsgreen.append('text')
@@ -289,19 +289,19 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
             .text('CRUISE');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(79,514), rotate(-45)')
+            .attr('transform', 'translate(79,516), rotate(-45)')
             .text('LANDING');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(142,520), rotate(-45)')
+            .attr('transform', 'translate(142,522), rotate(-45)')
             .text('STANDING');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(205,525), rotate(-45)')
+            .attr('transform', 'translate(205,526), rotate(-45)')
             .text('APPROACH');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(285,511), rotate(-45)')
+            .attr('transform', 'translate(285,513), rotate(-45)')
             .text('TAKEOFF');
             barsgreen.append('text')
             .attr('class', 'bar label')
@@ -313,23 +313,23 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
             .text('TAXI');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(488,502), rotate(-45)')
+            .attr('transform', 'translate(488,503), rotate(-45)')
             .text('OTHER');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(538,525), rotate(-45)')
+            .attr('transform', 'translate(538,526), rotate(-45)')
             .text('UNKNOWN');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(595,540), rotate(-45)')
+            .attr('transform', 'translate(590,547), rotate(-45)')
             .text('MANEUVERING');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(672,525), rotate(-45)')
+            .attr('transform', 'translate(672,526), rotate(-45)')
             .text('UNKNOWN');
             barsgreen.append('text')
             .attr('class', 'bar label')
-            .attr('transform', 'translate(757,513), rotate(-45)')
+            .attr('transform', 'translate(757,515), rotate(-45)')
             .text('DESCENT');
             barsgreen.append('text')
             .attr('class', 'bar label')
@@ -342,7 +342,8 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .enter().append("rect")
                 .attr("y", function(d) {
                     // console.log(d.value.fatalities);
-                    return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities)));
+                    return 0;
+                    // return height + 60 - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)) - (height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities)));
                 })
                 .attr("x", function(d) {
                     counter++;
@@ -354,7 +355,7 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                     return height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities));
                 })
                 .attr("width", (width / 13) - (padding * 2))
-                .style("fill", "red");
+                .style("fill", "a82525");
           break;
 
           case 2:
