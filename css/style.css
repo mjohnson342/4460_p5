@@ -43,7 +43,19 @@ g2label { font: 4px Calibri; }
 
   height: 600px;
   width: 1000px;
-  background-color: #ddd;
+
+}
+
+#map {
+  display: inline-block;
+  position: fixed;
+  top: 60px;
+  z-index: -1;
+  margin-left: 0px;
+
+  height: 600px;
+  width: 1000px;
+
 }
 
 .d3-tip {

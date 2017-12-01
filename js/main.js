@@ -13,24 +13,14 @@ var svg = d3.select("svg"),
 //     y = d3.scaleLinear().rangeRound([0,height]);
 
 //white background
-svg.append("rect")
-    .attr("width", "100%")
-    .attr("height", "100%")
-    .attr("fill", "white");
+// svg.append("rect")
+//     .attr("width", "100%")
+//     .attr("height", "100%")
+//     .attr("fill", "white");
 
 var chart1 = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var atlLatLng = new L.LatLng(33.7771, -84.3900);
-var myMap = L.map('vis').setView(atlLatLng, 5);
-
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 10,
-    minZoom: 3,
-    id: 'mapbox.light',
-    accessToken: 'pk.eyJ1IjoiamFnb2R3aW4iLCJhIjoiY2lnOGQxaDhiMDZzMXZkbHYzZmN4ZzdsYiJ9.Uwh_L37P-qUoeC-MBSDteA'
-}).addTo(myMap);
 
 var chart2 = svg.append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -100,6 +90,14 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
     yScale = d3.scaleLinear()
         .range([height, 0]);
     //chart2 code
+
+    var bg2 = chart2.append("g");
+    bg2.append("rect")
+        .attr('transform', 'translate('+[-70, -70]+')')
+        .attr("width", 1000)
+        .attr("height", 600)
+        .attr("fill", "white");
+
     nested = d3.nest()
        .key(function(d) { return d.Broad_Phase_of_Flight; })
        .rollup(function(v) { return {
@@ -270,6 +268,14 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
         .range([0,width]);
     var xAxis3 = d3.axisBottom(xScale3);
 
+
+    var bg3 = chart3.append("g");
+    bg3.append("rect")
+        .attr('transform', 'translate('+[-70, -70]+')')
+        .attr("width", 1000)
+        .attr("height", 600)
+        .attr("fill", "white");
+
     chart3.append('g')
     	.attr('class', 'x axis')
         .attr('transform', 'translate('+[0, height]+')')
@@ -338,6 +344,12 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
 
 
                /// chart4 code
+               var bg4 = chart4.append("g");
+               bg4.append("rect")
+                   .attr('transform', 'translate('+[-70, -70]+')')
+                   .attr("width", 1000)
+                   .attr("height", 600)
+                   .attr("fill", "white");
 
         var parser = d3.timeParse("%m/%d/%Y");
         datum.forEach(function(d) {
@@ -352,6 +364,17 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
             .attr('transform', 'translate(0,'+height+')') // Only translate within trellis pixel space
             .call(d3.axisBottom(xScale4));
 
+            var atlLatLng = new L.LatLng(33.7771, -84.3900);
+            var myMap = L.map('map').setView(atlLatLng, 5);
+
+
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 10,
+                minZoom: 3,
+                id: 'mapbox.light',
+                accessToken: 'pk.eyJ1IjoiamFnb2R3aW4iLCJhIjoiY2lnOGQxaDhiMDZzMXZkbHYzZmN4ZzdsYiJ9.Uwh_L37P-qUoeC-MBSDteA'
+            }).addTo(myMap);
 
     //make the initial call to update with the first index paramter
     updateChart(0);
