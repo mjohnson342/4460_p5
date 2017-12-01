@@ -24,15 +24,16 @@ var chart2 = svg.append("g")
 var chart3 = svg.append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
- var dispatch = d3.dispatch('active', 'progress');
+
 
 //create axes but dont call them untill updateChart()
 var xAxis2 = chart2.append('g')
     .attr('class', 'x axis')
     .attr('transform', 'translate('+[0, height]+')');
-
 var yAxis2 = chart2.append('g')
     .attr('class', 'y axis');
+
+
 
 var sections = document.getElementsByClassName("step");
 sectionPositions = [];
@@ -51,7 +52,6 @@ console.log(sectionPositions);
 d3.select(window)
   .on("scroll.scroller", position);
 
-var dispatch = d3.dispatch("active", "progress");
 var currentIndex = 0;
 
 function position() {
@@ -60,8 +60,7 @@ function position() {
   sectionIndex = Math.min(sections.length - 1, sectionIndex);
 
   if (currentIndex !== sectionIndex) {
-    //dispatch.active(sectionIndex);
-    dispatch.call('active', this, sectionIndex);
+
     currentIndex = sectionIndex;
     //update chart on transition
     updateChart(currentIndex);
@@ -85,6 +84,80 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
         .range([height, 0]);
 
 
+    //chart3 code
+    var xDomain3 = [0, 6000];
+    var xScale3 = d3.scaleLinear()
+        .domain(xDomain3)
+        .range([0,width]);
+    var xAxis3 = d3.axisBottom(xScale3);
+
+    chart3.append('g')
+    	.attr('class', 'x axis')
+        .attr('transform', 'translate('+[0, height]+')')
+    	.call(xAxis3);
+
+    nestedMake = d3.nest()
+        .key(function(d) { return d['Make']; })
+        .rollup(function(leaves){
+            var deathTotal = d3.sum(leaves, function(d){
+                return d['Total_Fatal_Injuries'];
+            })
+            return deathTotal;
+        })
+        .entries(datum);
+        console.log(nestedMake);
+
+        var bars3 = chart3.append("g");
+
+        bars3.selectAll('.bar')
+            .data(nestedMake)
+            .enter()
+            .append('rect')
+            .attr('class', 'bar')
+            .attr('y', function(d, i) {
+                return i *  (height / 5);
+            })
+            .attr('x','0')
+            .attr('height', height / 5 - 30)
+            .attr('width', function(d) {
+                return xScale3(d.value);
+            });
+
+            bars3.append('text')
+        	   .attr('class', 'bar label')
+               .attr('transform', 'translate(180,40)')
+        	   .text('Bombardier');
+            bars3.append('text')
+           	   .attr('class', 'bar label')
+               .attr('transform', 'translate(180,130)')
+               .attr('fill', '#fff')
+           	   .text('Boeing');
+            bars3.append('text')
+          	   .attr('class', 'bar label')
+               .attr('transform', 'translate(180,225)')
+          	   .text('McDonnell Douglas');
+           bars3.append('text')
+         	   .attr('class', 'bar label')
+              .attr('transform', 'translate(180,320)')
+         	   .text('Embraer');
+           bars3.append('text')
+         	   .attr('class', 'bar label')
+              .attr('transform', 'translate(180,405)')
+              .attr('fill', '#fff')
+         	   .text('Airbus');
+
+
+
+        nestedDamage = d3.nest()
+            .key(function(d) { return d['Aircraft_Damage']; })
+            .rollup(function(leaves){
+                var deathTotal = d3.mean(leaves, function(d){
+                    return d['Total_Fatal_Injuries'];
+                })
+                return deathTotal;
+            })
+            .entries(datum);
+            console.log(nestedDamage);
 
     //make the initial call to update with the first index paramter
     updateChart(0);
@@ -99,12 +172,22 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .transition()
                 .duration(750)
                 .attr("opacity", 0);
+            chart3.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 0);
           break;
 
           case 1:
 
 
             console.log('code for vis 2 here');
+
+            chart3.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 0);
+
             xAxis2.transition()
                 .duration(750) // Add transition
                 .call(d3.axisBottom(xScale));
@@ -116,6 +199,7 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .transition()
                 .duration(750)
                 .attr("opacity", 1);
+
 
             nested = d3.nest()
                 .key(function(d) { return d.Country; })
@@ -133,6 +217,11 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .transition()
                 .duration(750)
                 .attr("opacity", 0);
+
+            chart3.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 1);
           break;
       }
       //call axes
