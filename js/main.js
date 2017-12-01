@@ -118,12 +118,79 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .attr("opacity", 1);
 
             nested = d3.nest()
-                .key(function(d) { return d.Country; })
-                .rollup(function(v) { return {
-                  count: v.length,
-                }; })
-              .entries(incidents);
+               .key(function(d) { return d.Broad_Phase_of_Flight; })
+               .rollup(function(v) { return {
+                 count: v.length,
+                 fatalities: d3.sum(v, function(d) {return d.Total_Fatal_Injuries; }),
+                 injured: d3.sum(v, function(d) {return d.Total_Serious_Injuries; }),
+                 safe: d3.sum(v, function(d) {return d.Total_Uninjured; })
+               }; })
+             .entries(incidents);
+
+            // var barscale = d3.scale.log().domain([0, function(d) { return d.safe }]);
+
             console.log(nested);
+            counter = 0;
+            padding = 4;
+            barsyellow = chart2.append("g")
+                .selectAll("yellowbars")
+                .data(nested)
+                .enter().append("rect")
+                .attr("y", function(d) {
+                    // console.log(d.value.fatalities);
+                    return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
+                })
+                .attr("x", function(d) {
+                    counter++;
+                    return ((counter - 1) * ((width/13) + padding)) + padding;
+                })
+                .attr("height", function(d) {
+                    // return 50;
+                    // console.log(barscale(d.value.injured));
+                    return (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
+                })
+                .attr("width", (width / 13) - (padding * 2))
+                .style("fill", "yellow");
+            counter = 0;
+            barsgreen = chart2.append("g")
+                .selectAll("greenbars")
+                .data(nested)
+                .enter().append("rect")
+                .attr("y", function(d) {
+                    // console.log(d.value.fatalities);
+                    return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities)));
+                })
+                .attr("x", function(d) {
+                    counter++;
+                    return ((counter - 1) * ((width/13) + padding)) + padding;
+                })
+                .attr("height", function(d) {
+                    // return 50;
+                    // console.log(barscale(d.value.injured));
+                    return height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities));
+                })
+                .attr("width", (width / 13) - (padding * 2))
+                .style("fill", "green");
+            counter = 0
+            barsred = chart2.append("g")
+                .selectAll("redbars")
+                .data(nested)
+                .enter().append("rect")
+                .attr("y", function(d) {
+                    // console.log(d.value.fatalities);
+                    return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities)));
+                })
+                .attr("x", function(d) {
+                    counter++;
+                    return ((counter - 1) * ((width/13) + padding)) + padding;
+                })
+                .attr("height", function(d) {
+                    // return 50;
+                    // console.log(barscale(d.value.injured));
+                    return height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities));
+                })
+                .attr("width", (width / 13) - (padding * 2))
+                .style("fill", "red");
           break;
 
           case 2:
