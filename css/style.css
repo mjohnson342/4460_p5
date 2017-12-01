@@ -1,6 +1,11 @@
 body {
     font-size: 18px;
-    font-family: sans-serif;
+    font-family: "Calibri",sans-serif;
+}
+
+.title {
+    font-size: 24px;
+    font-style: italic;
 }
 
 #main {
@@ -31,7 +36,7 @@ body {
   position: fixed;
   top: 60px;
   z-index: 1;
-  margin-left: 0;
+  margin-left: 30px;
 
   height: 600px;
   width: 1000px;

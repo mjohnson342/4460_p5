@@ -24,7 +24,10 @@ var chart2 = svg.append("g")
 var chart3 = svg.append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var chart4 = svg.append("g")
+.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var dateDomain = [new Date(1995, 0), new Date(2016, 7)];
 
 //create axes but dont call them untill updateChart()
 var xAxis2 = chart2.append('g')
@@ -107,6 +110,17 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
         .entries(datum);
         console.log(nestedMake);
 
+    nestedModel = d3.nest()
+        .key(function(d) { return d['Model']; })
+        .rollup(function(leaves){
+            var deathTotal = d3.sum(leaves, function(d){
+                return d['Total_Fatal_Injuries'];
+            })
+            return deathTotal;
+        })
+        .entries(datum);
+        console.log(nestedModel);
+
         var bars3 = chart3.append("g");
 
         bars3.selectAll('.bar')
@@ -147,17 +161,21 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
          	   .text('Airbus');
 
 
+               /// chart4 code
 
-        nestedDamage = d3.nest()
-            .key(function(d) { return d['Aircraft_Damage']; })
-            .rollup(function(leaves){
-                var deathTotal = d3.mean(leaves, function(d){
-                    return d['Total_Fatal_Injuries'];
-                })
-                return deathTotal;
-            })
-            .entries(datum);
-            console.log(nestedDamage);
+        var parser = d3.timeParse("%m/%d/%Y");
+        datum.forEach(function(d) {
+            d.Event_Date = parser(d.Event_Date);
+        });
+
+        var xScale4 = d3.scaleTime()
+            .domain(dateDomain) // Scale time requires domain is Date objects
+            .range([0, width]); // Range is width of trellis chart space
+        chart4.append('g')
+            .attr('class', 'x axis')
+            .attr('transform', 'translate(0,'+height+')') // Only translate within trellis pixel space
+            .call(d3.axisBottom(xScale4));
+
 
     //make the initial call to update with the first index paramter
     updateChart(0);
@@ -176,14 +194,21 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .transition()
                 .duration(750)
                 .attr("opacity", 0);
+            chart4.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 0);
           break;
 
           case 1:
 
-
             console.log('code for vis 2 here');
 
             chart3.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 0);
+            chart4.selectAll("g")
                 .transition()
                 .duration(750)
                 .attr("opacity", 0);
@@ -285,7 +310,30 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .duration(750)
                 .attr("opacity", 0);
 
+            chart4.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 0);
+
             chart3.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 1);
+          break;
+          case 3:
+            console.log('code for vis 4 here');
+
+            chart2.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 0);
+
+            chart3.selectAll("g")
+                .transition()
+                .duration(750)
+                .attr("opacity", 0);
+
+            chart4.selectAll("g")
                 .transition()
                 .duration(750)
                 .attr("opacity", 1);
