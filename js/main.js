@@ -101,6 +101,41 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
     // console.log(nested);
     counter = 0;
     padding = 1;
+
+
+    // tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d; });
+    // var tip2 = d3.tip()
+    //   .attr('class', 'd3-tip')
+    //   .offset([-10, 0])
+    //   .html(function(d) {
+    //     return "<strong>Frequency:</strong> <span style='color:red'>" + d.value.safe + "</span>";
+    //   })
+
+    barsgreen = chart2.append("g");
+    barsgreen.selectAll("greenbars")
+    .data(nested)
+    .enter().append("rect")
+    .attr("y", function(d) {
+        // console.log((d.value.safe + ", " + d.value.injured + ", " + d.value.fatalities));
+        return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities)));
+    })
+    .attr("x", function(d) {
+        counter++;
+        return ((counter - 1) * ((width/13) + padding)) + padding;
+    })
+    .attr("height", function(d) {
+        // return 50;
+        // console.log(barscale(d.value.injured));
+        return height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities));
+    })
+    .attr("width", (width / 13) - (padding * 2))
+    // .on("mouseover", function(d) { console.log("hello") ;})
+    // .on("mouseout", function(d) { console.log("hello" );})
+    .style("fill", "40bf40");
+    counter = 0;
+
+
+
     barsyellow = chart2.append("g")
         .selectAll("yellowbars")
         .data(nested)
@@ -119,28 +154,33 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
             return (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
         })
         .attr("width", (width / 13) - (padding * 2))
+        // .on("mouseover", function(d) { console.log("helo"); })
+        // .on("mouseout", function(d) { console.log("helo"); })
         .style("fill", "#f7cb09");
     counter = 0;
-    barsgreen = chart2.append("g");
-        barsgreen.selectAll("greenbars")
-        .data(nested)
-        .enter().append("rect")
-        .attr("y", function(d) {
-            // console.log((d.value.safe + ", " + d.value.injured + ", " + d.value.fatalities));
-            return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities)));
-        })
-        .attr("x", function(d) {
-            counter++;
-            return ((counter - 1) * ((width/13) + padding)) + padding;
-        })
-        .attr("height", function(d) {
-            // return 50;
-            // console.log(barscale(d.value.injured));
-            return height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities));
-        })
-        .attr("width", (width / 13) - (padding * 2))
-        .style("fill", "40bf40");
-    counter = 0;
+
+    barsred = chart2.append("g")
+    .selectAll("redbars")
+    .data(nested)
+    .enter().append("rect")
+    .attr("y", function(d) {
+        // console.log(d.value.fatalities);
+        return 0;
+        // return height + 60 - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)) - (height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities)));
+    })
+    .attr("x", function(d) {
+        counter++;
+        return ((counter - 1) * ((width/13) + padding)) + padding;
+    })
+    .attr("height", function(d) {
+        // return 50;
+        // console.log(barscale(d.value.injured));
+        return height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities));
+    })
+    .attr("width", (width / 13) - (padding * 2))
+    // .on("mouseover", function(d) { console.log("helo"); })
+    // .on("mouseout", function(d) { console.log("helo"); })
+    .style("fill", "a82525");
 
     barsgreen.append('text')
     .attr('class', 'bar label')
@@ -195,26 +235,6 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
     .attr('transform', 'translate(804,535), rotate(-45)')
     .text('GO-AROUND');
 
-    barsred = chart2.append("g")
-        .selectAll("redbars")
-        .data(nested)
-        .enter().append("rect")
-        .attr("y", function(d) {
-            // console.log(d.value.fatalities);
-            return 0;
-            // return height + 60 - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)) - (height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities)));
-        })
-        .attr("x", function(d) {
-            counter++;
-            return ((counter - 1) * ((width/13) + padding)) + padding;
-        })
-        .attr("height", function(d) {
-            // return 50;
-            // console.log(barscale(d.value.injured));
-            return height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities));
-        })
-        .attr("width", (width / 13) - (padding * 2))
-        .style("fill", "a82525");
 
     //chart3 code
     var xDomain3 = [0, 6000];
