@@ -99,6 +99,168 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
         .range([0, width]);
     yScale = d3.scaleLinear()
         .range([height, 0]);
+    //chart2 code
+    nested = d3.nest()
+       .key(function(d) { return d.Broad_Phase_of_Flight; })
+       .rollup(function(v) { return {
+         count: v.length,
+         fatalities: d3.sum(v, function(d) {return d.Total_Fatal_Injuries; }),
+         injured: d3.sum(v, function(d) {return d.Total_Serious_Injuries; }),
+         safe: d3.sum(v, function(d) {return d.Total_Uninjured; })
+       }; })
+     .entries(incidents);
+
+    // var barscale = d3.scale.log().domain([0, function(d) { return d.safe }]);
+    // nested = nested.filter( d => (d.safe > 0 || d.injured > 0 || d.fatalities > 0));
+    // console.log(nested);
+    counter = 0;
+    padding = 1;
+
+
+    // tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d; });
+    // var tip2 = d3.tip()
+    //   .attr('class', 'd3-tip')
+    //   .offset([-10, 0])
+    //   .html(function(d) {
+    //     return "<strong>Frequency:</strong> <span style='color:red'>" + d.value.safe + "</span>";
+    //   })
+
+    barsgreen = chart2.append("g");
+    barsgreen.selectAll("greenbars")
+    .data(nested)
+    .enter().append("rect")
+    .attr("y", function(d) {
+        // console.log((d.value.safe + ", " + d.value.injured + ", " + d.value.fatalities));
+        return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities)));
+    })
+    .attr("x", function(d) {
+        counter++;
+        return ((counter - 1) * ((width/13) + padding)) + padding;
+    })
+    .attr("height", function(d) {
+        // return 50;
+        // console.log(barscale(d.value.injured));
+        return height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities));
+    })
+    .attr("width", (width / 13) - (padding * 2))
+    // .on("mouseover", function(d) { console.log("hello") ;})
+    // .on("mouseout", function(d) { console.log("hello" );})
+    .style("fill", "40bf40");
+    counter = 0;
+
+
+
+    barsyellow = chart2.append("g")
+        .selectAll("yellowbars")
+        .data(nested)
+        .enter().append("rect")
+        .attr("y", function(d) {
+            console.log(d.key);
+            return height  - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
+        })
+        .attr("x", function(d) {
+            counter++;
+            return ((counter - 1) * ((width/13) + padding)) + padding;
+        })
+        .attr("height", function(d) {
+            // return 50;
+            // console.log(barscale(d.value.injured));
+            return (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
+        })
+        .attr("width", (width / 13) - (padding * 2))
+        // .on("mouseover", function(d) { console.log("helo"); })
+        // .on("mouseout", function(d) { console.log("helo"); })
+        .style("fill", "#f7cb09");
+    counter = 0;
+
+    barsred = chart2.append("g")
+    .selectAll("redbars")
+    .data(nested)
+    .enter().append("rect")
+    .attr("y", function(d) {
+        // console.log(d.value.fatalities);
+        return 0;
+        // return height + 60 - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)) - (height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities)));
+    })
+    .attr("x", function(d) {
+        counter++;
+        return ((counter - 1) * ((width/13) + padding)) + padding;
+    })
+    .attr("height", function(d) {
+        // return 50;
+        // console.log(barscale(d.value.injured));
+        return height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities));
+    })
+    .attr("width", (width / 13) - (padding * 2))
+    // .on("mouseover", function(d) { console.log("helo"); })
+    // .on("mouseout", function(d) { console.log("helo"); })
+    .style("fill", "a82525");
+
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(22,500), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('CRUISE');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(81,509), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('LANDING');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(145,512), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('STANDING');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(210,515), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('APPROACH');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(285,511), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('TAKEOFF');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(363,501), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('CLIMB');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(435,496), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('TAXI');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(488,503), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('OTHER');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(538,526), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('UNREPORTED');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(597,530), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('MANEUVERING');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(679,515), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('UNKNOWN');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(757,510), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('DESCENT');
+    barsgreen.append('text')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(804,520), rotate(-45)')
+    .attr('font-size', '12px')
+    .text('GO-AROUND');
 
 
     //chart3 code
@@ -227,12 +389,13 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .duration(750)
                 .attr("opacity", 0);
 
-            xAxis2.transition()
-                .duration(750) // Add transition
-                .call(d3.axisBottom(xScale));
-            yAxis2.transition()
-                .duration(750) // Add transition
-                .call(d3.axisLeft(yScale));
+            // xAxis2.transition()
+            //     .duration(750) // Add transition
+            //     .call(d3.axisBottom(xScale));
+            // yAxis2.transition()
+            //     .duration(750) // Add transition
+            //     .call(d3.axisLeft(yScale));
+
 
             chart2.selectAll("g")
                 .transition()
@@ -240,80 +403,7 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
                 .attr("opacity", 1);
 
 
-            nested = d3.nest()
-               .key(function(d) { return d.Broad_Phase_of_Flight; })
-               .rollup(function(v) { return {
-                 count: v.length,
-                 fatalities: d3.sum(v, function(d) {return d.Total_Fatal_Injuries; }),
-                 injured: d3.sum(v, function(d) {return d.Total_Serious_Injuries; }),
-                 safe: d3.sum(v, function(d) {return d.Total_Uninjured; })
-               }; })
-             .entries(incidents);
 
-            // var barscale = d3.scale.log().domain([0, function(d) { return d.safe }]);
-
-            console.log(nested);
-            counter = 0;
-            padding = 4;
-            barsyellow = chart2.append("g")
-                .selectAll("yellowbars")
-                .data(nested)
-                .enter().append("rect")
-                .attr("y", function(d) {
-                    // console.log(d.value.fatalities);
-                    return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
-                })
-                .attr("x", function(d) {
-                    counter++;
-                    return ((counter - 1) * ((width/13) + padding)) + padding;
-                })
-                .attr("height", function(d) {
-                    // return 50;
-                    // console.log(barscale(d.value.injured));
-                    return (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
-                })
-                .attr("width", (width / 13) - (padding * 2))
-                .style("fill", "yellow");
-            counter = 0;
-            barsgreen = chart2.append("g")
-                .selectAll("greenbars")
-                .data(nested)
-                .enter().append("rect")
-                .attr("y", function(d) {
-                    // console.log(d.value.fatalities);
-                    return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities)));
-                })
-                .attr("x", function(d) {
-                    counter++;
-                    return ((counter - 1) * ((width/13) + padding)) + padding;
-                })
-                .attr("height", function(d) {
-                    // return 50;
-                    // console.log(barscale(d.value.injured));
-                    return height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities));
-                })
-                .attr("width", (width / 13) - (padding * 2))
-                .style("fill", "green");
-            counter = 0
-            barsred = chart2.append("g")
-                .selectAll("redbars")
-                .data(nested)
-                .enter().append("rect")
-                .attr("y", function(d) {
-                    // console.log(d.value.fatalities);
-                    return height - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities)));
-                })
-                .attr("x", function(d) {
-                    counter++;
-                    return ((counter - 1) * ((width/13) + padding)) + padding;
-                })
-                .attr("height", function(d) {
-                    // return 50;
-                    // console.log(barscale(d.value.injured));
-                    return height * (d.value.fatalities / (d.value.safe + d.value.injured + d.value.fatalities));
-                })
-                .attr("width", (width / 13) - (padding * 2))
-                .style("fill", "red");
           break;
 
           case 2:
