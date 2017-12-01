@@ -183,56 +183,69 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
     .style("fill", "a82525");
 
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(22,505), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(22,500), rotate(-45)')
+    .attr('font-size', '12px')
     .text('CRUISE');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(79,516), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(81,509), rotate(-45)')
+    .attr('font-size', '12px')
     .text('LANDING');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(142,522), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(145,512), rotate(-45)')
+    .attr('font-size', '12px')
     .text('STANDING');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(205,526), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(210,515), rotate(-45)')
+    .attr('font-size', '12px')
     .text('APPROACH');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(285,513), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(285,511), rotate(-45)')
+    .attr('font-size', '12px')
     .text('TAKEOFF');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(365,499), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(363,501), rotate(-45)')
+    .attr('font-size', '12px')
     .text('CLIMB');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(440,491), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(435,496), rotate(-45)')
+    .attr('font-size', '12px')
     .text('TAXI');
     barsgreen.append('text')
-    .attr('class', 'bar label')
+    .attr('class', 'g2label')
     .attr('transform', 'translate(488,503), rotate(-45)')
+    .attr('font-size', '12px')
     .text('OTHER');
     barsgreen.append('text')
-    .attr('class', 'bar label')
+    .attr('class', 'g2label')
     .attr('transform', 'translate(538,526), rotate(-45)')
+    .attr('font-size', '12px')
     .text('UNREPORTED');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(590,547), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(597,530), rotate(-45)')
+    .attr('font-size', '12px')
     .text('MANEUVERING');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(672,526), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(679,515), rotate(-45)')
+    .attr('font-size', '12px')
     .text('UNKNOWN');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(757,515), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(757,510), rotate(-45)')
+    .attr('font-size', '12px')
     .text('DESCENT');
     barsgreen.append('text')
-    .attr('class', 'bar label')
-    .attr('transform', 'translate(804,535), rotate(-45)')
+    .attr('class', 'g2label')
+    .attr('transform', 'translate(804,520), rotate(-45)')
+    .attr('font-size', '12px')
     .text('GO-AROUND');
 
 

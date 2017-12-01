@@ -4,6 +4,8 @@ body {
     background-image: url("../images/clouds_large.jpg");
 }
 
+g2label { font: 4px Calibri; }
+
 .title {
     font-size: 24px;
     font-style: italic;
