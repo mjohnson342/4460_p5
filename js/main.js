@@ -21,7 +21,6 @@ var svg = d3.select("svg"),
 var chart1 = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
 var chart2 = svg.append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -73,6 +72,74 @@ function position() {
     updateChart(currentIndex);
   }
 }
+
+
+//chart1/map code
+var atlLatLng = new L.LatLng(10, 15);
+var myMap = L.map('map').setView(atlLatLng, 2);
+
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 10,
+    minZoom: 1,
+    id: 'mapbox.light',
+    accessToken: 'pk.eyJ1IjoiamFnb2R3aW4iLCJhIjoiY2lnOGQxaDhiMDZzMXZkbHYzZmN4ZzdsYiJ9.Uwh_L37P-qUoeC-MBSDteA'
+}).addTo(myMap);
+
+var svgLayer = L.svg();
+svgLayer.addTo(myMap)
+
+var svg2 = d3.select('#map').select('svg');
+var nodeLinkG = svg2.select('g')
+    .attr('class', 'leaflet-zoom-hide');
+
+d3.queue()
+    .defer(d3.csv, './data/aircraft_incidents.csv', function(row) {
+        return {id: row['Accident_Number'], location: row['Location'], LatLng: [+row['Latitude'], +row['Longitude']], severity: row['Injury_Severity'],
+            damage: row['Aircraft_Damage'], make: row['Make']};
+    })    .await(readyToDraw);
+
+function readyToDraw(error, nodes) {
+    if(error) {
+        console.error('Error while loading datasets.');
+        console.error(error);
+        return;
+    }
+
+    chart1.selectAll('.grid-node')
+        .data(nodes)
+        .enter()
+        .append('circle')
+        .attr('class', 'grid-node')
+        .style('fill', function(d) {
+            if (d.damage == ""){
+                return "#777";
+            } else if (d.damage == "Minor") {
+                return "yellow";
+            } else if (d.damage == "Substantial") {
+                return "orange";
+            } else if (d.damage == "Destroyed") {
+                return "red";
+            }
+
+        })
+        .style('fill-opacity', function(d) {
+            if (d.LatLng == [0,0]) {
+                return 0
+            }
+            return 0.5;
+        })
+        .attr('cx', function(d){
+            return myMap.latLngToLayerPoint(d.LatLng).x})
+        .attr('cy', function(d){return myMap.latLngToLayerPoint(d.LatLng).y})
+        .attr('r', 3);
+            console.log(nodes);
+}
+
+
+
+
 
 //aircraft data
 d3.csv('./data/aircraft_incidents.csv', function(error, datum){
@@ -153,7 +220,6 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
         .data(nested)
         .enter().append("rect")
         .attr("y", function(d) {
-            console.log(d.key);
             return height  - (height * (d.value.safe / (d.value.safe + d.value.injured + d.value.fatalities))) - (height * (d.value.injured / (d.value.safe + d.value.injured + d.value.fatalities)));
         })
         .attr("x", function(d) {
@@ -363,18 +429,6 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
             .attr('class', 'x axis')
             .attr('transform', 'translate(0,'+height+')') // Only translate within trellis pixel space
             .call(d3.axisBottom(xScale4));
-
-            var atlLatLng = new L.LatLng(33.7771, -84.3900);
-            var myMap = L.map('map').setView(atlLatLng, 5);
-
-
-            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                maxZoom: 10,
-                minZoom: 3,
-                id: 'mapbox.light',
-                accessToken: 'pk.eyJ1IjoiamFnb2R3aW4iLCJhIjoiY2lnOGQxaDhiMDZzMXZkbHYzZmN4ZzdsYiJ9.Uwh_L37P-qUoeC-MBSDteA'
-            }).addTo(myMap);
 
     //make the initial call to update with the first index paramter
     updateChart(0);
