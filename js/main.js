@@ -42,16 +42,16 @@ var yAxis2 = chart2.append('g')
 
 
 var sections = document.getElementsByClassName("step");
-sectionPositions = [];
-var startPos;
+sectionPositions = [500,1400,2100,2800];
 
-for (var i = 0, len = sections.length; i < len; i++) {
-    var current = sections[i];
-    if(i === 0) {
-      startPos = current.getBoundingClientRect().top;;
-    }
-    sectionPositions.push(current.getBoundingClientRect().top - startPos);
-}
+// var startPos;
+// for (var i = 0, len = sections.length; i < len; i++) {
+//     var current = sections[i];
+//     if(i === 0) {
+//       startPos = current.getBoundingClientRect().top;;
+//     }
+//     sectionPositions.push(current.getBoundingClientRect().top - startPos);
+// }
 
 console.log(sectionPositions);
 
@@ -113,14 +113,14 @@ function readyToDraw(error, nodes) {
         .append('circle')
         .attr('class', 'grid-node')
         .style('fill', function(d) {
-            if (d.damage == ""){
-                return "#777";
-            } else if (d.damage == "Minor") {
-                return "yellow";
-            } else if (d.damage == "Substantial") {
-                return "orange";
-            } else if (d.damage == "Destroyed") {
-                return "red";
+            if (d.severity == "Unavailable"){
+                return "#99AEAC";
+            } else if (d.severity == "Incident") {
+                return "#FAC503";
+            } else if (d.severity == "Non-Fatal") {
+                return "#D46D00";
+            } else {
+                return "#900000";
             }
 
         })
@@ -376,6 +376,7 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
             .enter()
             .append('rect')
             .attr('class', 'bar')
+            .attr('fill', '#76A9CF')
             .attr('y', function(d, i) {
                 return i *  (height / 5);
             })
