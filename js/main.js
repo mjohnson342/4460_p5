@@ -408,6 +408,10 @@ d3.csv('./data/aircraft_incidents.csv', function(error, datum){
               .attr('transform', 'translate(180,405)')
               .attr('fill', '#fff')
          	   .text('Airbus');
+           bars3.append('text')
+         	   .attr('class', 'axis label')
+              .attr('transform', 'translate(400,500)')
+         	   .text('Fatalities');
 
 
                /// chart4 code
